@@ -1,0 +1,10 @@
+{
+    "name": "intel/simple-line-liff",
+    "authors": [
+        {
+            "name": "Fakhri Imaduddin",
+            "email": "fakhriimaduddin19@gmail.com"
+        }
+    ],
+    "require": {}
+}
