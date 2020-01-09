@@ -1,16 +1,3 @@
-const editDiaryCondig = {
-  placeholder: "Tulis isi diary disini",
-  toolbar: [
-    ["style", ["bold", "italic", "underline", "clear"]],
-    ["font", ["strikethrough", "superscript", "subscript"]],
-    ["fontsize", ["fontsize"]],
-    ["color", ["color"]],
-    ["para", ["ul", "ol", "paragraph"]],
-    ["height", ["height"]],
-    ["table", ["table"]]
-  ],
-  lineHeights: ["0.5", "0.6", "0.8", "1.0", "1.2", "1.4", "1.5", "2.0", "3.0"]
-};
 const regex = /(<|\&amp;lt;|\&lt;)\/?script(>|\&amp;gt;|\&gt;)/gi;
 const diary = {
   submitTambahDiary: async () => {
@@ -18,7 +5,7 @@ const diary = {
       line_u_id: (await lineLiff.getProfile()).userId,
       judul: $("#tambah-diary-judul").val(),
       tanggal: $("#tambah-diary-tanggal").val(),
-      isi: ($("#tambah-diary-isi").val()).replace(regex, "")
+      isi: $("#tambah-diary-isi").val().replace(regex, "")
     };
     console.log(ajaxData.isi);
     console.log((ajaxData.isi).replace(regex, ""));
@@ -32,6 +19,10 @@ const diary = {
       },
       success: async (res) => {
         console.log("diary berhasil ditambahkan");
+        $(".summernote").summernote("destroy");
+        $("#tambah-diary-isi").val("");
+        $("#tambah-diary-judul").val("");
+        initSummerNote();
         await diary.refreshDiary();
         Toast.fire({
           icon: "success",
@@ -54,9 +45,9 @@ const diary = {
           append += `<tr><td>${i + 1}</td><td>${res.data[i].judul}</td><td>${
             res.data[i].tanggal
           }</td><td>
-          <a href="javascrip:void(0)" class="badge badge-primary" onclick="diary.readDiary(${i})"><i class="far fa-eye"></i> Lihat</a> 
-          <a href="javascrip:void(0)" class="badge badge-warning" onclick="diary.editDiary(${i})"><i class="fas fa-pen"></i> Edit</a> 
-          <a href="javascrip:void(0)" class="badge badge-danger" onclick="diary.deleteDiary(${i})"><i class="fas fa-trash"></i> Hapus</a></td></tr>`;
+          <a href="#" class="badge badge-primary" onclick="diary.readDiary(${i})"><i class="far fa-eye"></i> Lihat</a> 
+          <a href="#" class="badge badge-warning" onclick="diary.editDiary(${i})"><i class="fas fa-pen"></i> Edit</a> 
+          <a href="#" class="badge badge-danger" onclick="diary.deleteDiary(${i})"><i class="fas fa-trash"></i> Hapus</a></td></tr>`;
           diaryArr.push(res.data[i]);
         }
         append += `</tbody>`;
@@ -84,8 +75,7 @@ const diary = {
     $("#edit-diary-id").val(diarySelected.id);
     $("#edit-diary-isi").summernote("destroy");
     $("#edit-diary-isi").val(diarySelected.isi);
-    $("#edit-diary-isi").summernote(editDiaryCondig);
-    $("#edit-diary-isi").summernote("lineHeight", 0.8);
+    initSummerNote();
     $("#modal-edit-diary").modal("show");
   },
   submitEditDiary: async () => {
@@ -130,7 +120,7 @@ const diary = {
     }
     Swal.fire({
       title: 'Yakin mau menghapus?',
-      text: "Diary yang dihapus tidak bisa dikembalikan",
+      html: `Diary <b>"${diarySelected.judul}"</b> akan dihapus`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

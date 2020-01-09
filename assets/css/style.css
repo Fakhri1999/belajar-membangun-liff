@@ -33,3 +33,6 @@ a.link-js :focus {
   z-index: 9998;
   background-color: #FFF;
 }
+.mb-200 {
+  margin-bottom: 400px;
+}
