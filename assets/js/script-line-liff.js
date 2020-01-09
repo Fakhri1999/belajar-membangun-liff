@@ -1,14 +1,10 @@
 let url = window.location;
 let protocol = url.protocol;
 let hostname = url.hostname;
+let pathname = url.pathname;
 // check if in dev environment
 const apiUrl = hostname == "localhost" ? "http://localhost:1231/" : "https://simple-diary.herokuapp.com/";
-if (hostname == "localhost") {
-  let pathname = url.pathname;
-  const baseUrl = `${protocol}//${hostname}${pathname}`;
-} else {
-  const baseUrl = `${protocol}//${hostname}/`;
-}
+const baseUrl = hostname == "localhost" ? `${protocol}//${hostname}${pathname}` : `${protocol}//${hostname}/`;
 let diaryArr = [];
 const lineLiff = {
   init: () => {
