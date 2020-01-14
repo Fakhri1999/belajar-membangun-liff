@@ -31,8 +31,11 @@ $(document).ready(async function() {
     format: "dd/mm/yyyy"
   });
   initSummerNote();
-  lineLiff.init();
-  lineLiff.isLogin();
+  let initDone = await lineLiff.init();
+  console.log(initDone)
+  if(initDone){
+    lineLiff.isLogin();
+  }
 });
 const Toast = Swal.mixin({
   toast: true,

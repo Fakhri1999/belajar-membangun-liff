@@ -3,15 +3,22 @@ let protocol = url.protocol;
 let hostname = url.hostname;
 let pathname = url.pathname;
 // check if in dev environment
-const apiUrl = hostname == "localhost" ? "http://localhost:1231/" : "https://simple-diary.herokuapp.com/";
-const baseUrl = hostname == "localhost" ? `${protocol}//${hostname}${pathname}` : `${protocol}//${hostname}/`;
+const apiUrl =
+  hostname == "localhost"
+    ? "http://localhost:1231/"
+    : "https://simple-diary.herokuapp.com/";
+const baseUrl =
+  hostname == "localhost"
+    ? `${protocol}//${hostname}${pathname}`
+    : `${protocol}//${hostname}/`;
 let diaryArr = [];
 const lineLiff = {
-  init: () => {
-    liff
+  init: async () => {
+    return await liff
       .init({ liffId: "1653656371-KpAnBYaa" })
       .then(() => {
         console.log("berhasil di init");
+        return true;
       })
       .catch(LiffError => {
         console.log(LiffError);
@@ -32,7 +39,7 @@ const lineLiff = {
       $("#LineUserId").html(profile.userId);
       $("#LineDisplayName").html(profile.displayName);
       $("#LinePicture").attr("src", profile.pictureUrl);
-      console.log(profile)
+      console.log(profile);
       await lineLiff.checkUserExist(userId);
     }
   },
